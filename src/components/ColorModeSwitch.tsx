@@ -11,7 +11,7 @@ const ColorModeSwitch = () => {
       />
       <Text
         whiteSpace="nowrap"
-        fontSize={{ base: "14px", md: "16px", lg: "larger" }}
+        fontSize={{ base: "14px", md: "18px", lg: "larger" }}
       >
         {colorMode === "dark" ? "light mode" : "dark mode"}
       </Text>

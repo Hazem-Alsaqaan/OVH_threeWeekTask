@@ -1,14 +1,13 @@
 import { Grid, GridItem } from "@chakra-ui/react";
 import Navbar from "./components/Navbar";
 import SelectGenre from "./components/SelectGenre";
-import NowPlayingMovies from "./components/NowPlayingMovies";
 import { useState } from "react";
-import PopuralMovies from "./components/PopuralMovies";
-import TopRated from "./components/TopRated";
-import Upcoming from "./components/Upcoming";
+import ListMovies from "./components/ListMovies";
 
 function App() {
   const [genreMovies, setGenreMovies] = useState("nowPlaying");
+  const [movieQuery, setMovieQuery] = useState("");
+
   return (
     <>
       <Grid
@@ -18,19 +17,23 @@ function App() {
         }}
       >
         <GridItem area="nav">
-          <Navbar />
+          <Navbar onSearch={(searchText) => setMovieQuery(searchText)} />
         </GridItem>
         <GridItem area="main" padding={"18px"}>
           <SelectGenre setGenreMovies={setGenreMovies} />
-          {genreMovies === "popular" ? (
-            <PopuralMovies />
-          ) : genreMovies === "topRated" ? (
-            <TopRated />
-          ) : genreMovies === "upcoming" ? (
-            <Upcoming />
-          ) : (
-            <NowPlayingMovies />
-          )}
+          <ListMovies
+            endPoint={
+              movieQuery
+                ? `/search/movie?query=${movieQuery}&include_adult=false&language=en-US&page=1`
+                : genreMovies === "popular"
+                ? `/movie/popular?language=en-US&page=1`
+                : genreMovies === "topRated"
+                ? `/movie/top_rated?language=en-US&page=1`
+                : genreMovies === "upcoming"
+                ? `/movie/upcoming?language=en-US&page=1`
+                : `/movie/now_playing?language=en-US&page=1`
+            }
+          />
         </GridItem>
       </Grid>
     </>
